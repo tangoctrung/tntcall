@@ -1,3 +1,4 @@
+import HomePage from "@/components/HomePage";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -53,8 +54,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div>
-      HomePage
+    <div className="w-[100svw] h-[100svh] overflow-hidden">
+      <HomePage />
     </div>
   );
 }
