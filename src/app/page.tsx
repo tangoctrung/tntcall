@@ -22,12 +22,12 @@ export const metadata: Metadata = {
     siteName: 'tntcall',
     images: [
       {
-        url: 'https://nextjs.org/og.png', // Must be an absolute URL
+        url: 'https://static.vecteezy.com/system/resources/thumbnails/022/283/216/small_2x/3d-render-phone-icon-3d-render-call-center-icon-cartoon-minimal-style-support-customer-service-help-communication-concept-3d-render-call-center-icon-png.png', // Must be an absolute URL
         width: 800,
         height: 600,
       },
       {
-        url: 'https://nextjs.org/og-alt.png', // Must be an absolute URL
+        url: 'https://static.vecteezy.com/system/resources/thumbnails/022/283/216/small_2x/3d-render-phone-icon-3d-render-call-center-icon-cartoon-minimal-style-support-customer-service-help-communication-concept-3d-render-call-center-icon-png.png', // Must be an absolute URL
         width: 1800,
         height: 1600,
         alt: 'My custom alt',
