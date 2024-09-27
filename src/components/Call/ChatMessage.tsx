@@ -1,6 +1,6 @@
 'use client'
 import { dataMessage } from '@/constants/data'
-import { convertNameToTwoChar } from '@/utils/string'
+import { convertNameToTwoChar, randomColor } from '@/utils/string'
 import { convertTimeToSince } from '@/utils/time'
 import { list } from 'postcss'
 import React, { useEffect, useRef, useState } from 'react'
@@ -43,7 +43,10 @@ function ChatMessage() {
             <div className='mt-4 h-[calc(100%-48px)] overflow-scroll scrollbar-none'>
                 {listMessage && listMessage?.length > 0 && listMessage?.map((item: any, index: number) => (
                     <div key={index} className='flex items-start justify-start py-2' ref={__itemMessageRef}>
-                        <div className='w-7 h-7 bg-slate-500 rounded-full flex items-center justify-center text-xs font-semibold'>
+                        <div
+                            className={`w-7 h-7 rounded-full bg-slate-500 flex items-center justify-center text-xs font-semibold`}
+                        // style={{ backgroundColor: `${randomColor()}` }}
+                        >
                             {convertNameToTwoChar(item?.name)}
                         </div>
                         <div className='w-[calc(100%-28px)]'>

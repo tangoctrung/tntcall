@@ -25,7 +25,6 @@ function HomePage() {
             setErrorName("Bạn chưa điền tên của mình....")
             return;
         }
-        setIsOpenModal(false);
         router.push(`/${codeCall || "12345677"}`)
     }
 

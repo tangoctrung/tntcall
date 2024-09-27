@@ -1,3 +1,5 @@
+import { dataColors } from "@/constants/data";
+
 export const convertNameToTwoChar = (name: string) => {
     let data: any[] = name.trim().split(" ")
 
@@ -11,4 +13,11 @@ export const convertNameToTwoChar = (name: string) => {
     
     return wordLast[0]?.toUpperCase() + (wordLast1?.length > 0 ? wordLast1[0]?.toUpperCase() : "A");
 
+}
+
+export const randomColor = () => {
+    let index = Math.floor(Math.random() * 22)
+    console.log({index}, dataColors[index]);
+    
+    return dataColors[index];
 }

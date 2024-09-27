@@ -4,7 +4,7 @@ import IconCameraHide from '@/assets/icon/IconCameraHide'
 import IconMic from '@/assets/icon/IconMic'
 import IconMicHide from '@/assets/icon/IconMicHide'
 import { dataUserJoinCall } from '@/constants/data'
-import { convertNameToTwoChar } from '@/utils/string'
+import { convertNameToTwoChar, randomColor } from '@/utils/string'
 import React, { useEffect, useState } from 'react'
 
 function ListUserJoinCall() {
@@ -38,7 +38,9 @@ function ListUserJoinCall() {
                 {listUserJoinCall && listUserJoinCall?.length > 0 && listUserJoinCall?.map((item: any, index: number) => (
                     <div key={index} className='flex items-center justify-between mb-4'>
                         <div className='flex items-center w-[calc(100%-30px)]'>
-                            <div className='w-10 h-10 bg-slate-500 rounded-full flex items-center justify-center text-sm font-semibold'>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold`}
+                                style={{ backgroundColor: `${randomColor()}` }}
+                            >
                                 {convertNameToTwoChar(item?.name)}
                             </div>
                             <div className='ml-2 text-sm font-semibold line-clamp-1 w-[calc(100%-45px)]'>{item?.name}</div>
