@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CardVideo from './CardVideo'
 import IconCamera from '@/assets/icon/IconCamera'
 import IconCameraHide from '@/assets/icon/IconCameraHide'
@@ -17,6 +17,8 @@ function CallContainer() {
     const [isShowChat, setIsShowChat] = useState<boolean>(false);
     const [listUser, setListUser] = useState<any[]>([]);
     const classAnimation = "transition-all duration-300 ease-linear";
+    const myVideo = useRef<HTMLVideoElement>(null);
+    const [stream, setStream] = useState<any>();
 
     useEffect(() => {
         var listContainerUsers = document.getElementById("listContainerUser");
@@ -33,6 +35,17 @@ function CallContainer() {
             listContainerUsers?.removeEventListener("wheel", scrollListUser);
         }
     }, [])
+
+    useEffect(() => {
+        // navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        //     .then((currentStream) => {
+        //         console.log(currentStream);
+        //         setStream(currentStream);
+        //         if (isCamera && myVideo.current) myVideo.current.srcObject = currentStream;
+        //         // else myVideo.current.srcObject = null;
+        //     });
+    }, [isCamera]);
+
     const handleDisplayCamera = () => {
         setIsCamera(i => !i)
     }
@@ -58,10 +71,10 @@ function CallContainer() {
             <div className='w-full h-full p-5 overflow-hidden flex flex-col lg:flex-row items-center'>
                 <div className={`${listUser?.length > 0 ? "w-full lg:w-[70%] xl:w-[75%]" : "w-full"} ${classAnimation} ${listUser?.length > 0 ? "h-fit" : "h-full"} lg:h-full flex items-center justify-center`}>
                     <div className='w-full h-[200px] xs:h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[650px] 2xl:h-[700px]  bg-slate-900 rounded-2xl'>
-
+                        <video playsInline muted ref={myVideo} autoPlay />
                     </div>
                 </div>
-                <div className={`my-4 lg:ml-4 h-full ${listUser?.length > 0 ? "w-full h-[200px] lg:h-full lg:w-[30%] xl:w-[25%]" : "w-0 h-0"} ${classAnimation} overflow-hidden flex justify-center items-center`}>
+                <div className={`my-4 lg:ml-4 ${listUser?.length > 0 ? "w-full h-[200px] lg:h-full lg:w-[30%] xl:w-[25%]" : "w-0 h-0"} ${classAnimation} overflow-hidden flex justify-center items-center`}>
                     <div
                         className={`flex lg:flex-col lg:justify-normal w-fit h-full lg:h-fit max-h-full lg:w-full overflow-scroll scrollbar-none`}
                         id='listContainerUser'
@@ -118,7 +131,11 @@ function CallContainer() {
                         <ListUserJoinCall />
                     </div>
 
-                    <div className='h-[60%] w-full'>
+                    <div className='h-2 w-full bg-slate-700'
+                        style={{ boxShadow: "rgba(0, 0, 0, 0.5) 0px 1px 2px 0px, rgba(0, 0, 0, 0.5) 0px 2px 6px 2px;" }}
+                    ></div>
+
+                    <div className='h-[calc(60%-8px)] w-full'>
                         <ChatMessage />
                     </div>
                 </div>

@@ -37,11 +37,11 @@ function ListUserJoinCall() {
             <div className='mt-4 h-[calc(100%-32px)] overflow-scroll scrollbar-none'>
                 {listUserJoinCall && listUserJoinCall?.length > 0 && listUserJoinCall?.map((item: any, index: number) => (
                     <div key={index} className='flex items-center justify-between mb-4'>
-                        <div className='flex items-center'>
+                        <div className='flex items-center w-[calc(100%-30px)]'>
                             <div className='w-10 h-10 bg-slate-500 rounded-full flex items-center justify-center text-sm font-semibold'>
                                 {convertNameToTwoChar(item?.name)}
                             </div>
-                            <div className='ml-2 text-sm font-semibold line-clamp-1 w-[calc(100%-40px)]'>{item?.name}</div>
+                            <div className='ml-2 text-sm font-semibold line-clamp-1 w-[calc(100%-45px)]'>{item?.name}</div>
                         </div>
                         <div className='flex items-center'>
                             {item?.isCamera ? <IconCamera className='w-4 h-4 mr-2' /> : <IconCameraHide className='w-4 h-4 mr-2' />}

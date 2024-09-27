@@ -3,24 +3,43 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import Logo from "@/assets/images/logo.png";
+import Modal from '../Modal';
 
 function HomePage() {
 
     const router = useRouter();
     const [error, setError] = useState<string>("");
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [errorName, setErrorName] = useState<string>("");
+    const [codeCall, setCodeCall] = useState<string>("");
+
+    const handleTypeCodeCall = (e: any) => {
+        e.preventDefault();
+        setError("Mã cuộc gọi không tồn tại");
+        setIsOpenModal(true);
+    }
 
     const handleJoinCall = (e: any) => {
         e.preventDefault();
-        setError("Mã cuộc gọi không tồn tại");
-        // router.push(`/${e?.target[0].value}`)
+        if (e?.target[0]?.value === "") {
+            setErrorName("Bạn chưa điền tên của mình....")
+            return;
+        }
+        setIsOpenModal(false);
+        router.push(`/${codeCall || "12345677"}`)
     }
 
-    const handleChangeInput = (e: any) => {
+    const handleChangeInputCode = (e: any) => {
+        setCodeCall(e?.target?.value)
         setError("");
     }
 
+    const handleChangeInputName = (e: any) => {
+        setErrorName("");
+    }
+
     const handleCreateCall = () => {
-        router.push("/123456789")
+        setIsOpenModal(true)
     }
     return (
         <div className='w-full h-full flex justify-center items-center bg-slate-700'>
@@ -42,15 +61,28 @@ function HomePage() {
                     <p className='w-[100px] h-[1px] bg-slate-800 ml-2'></p>
                 </div>
 
-                <form onSubmit={handleJoinCall} className='mt-4'>
+                <form onSubmit={handleTypeCodeCall} className='mt-4'>
                     <input
                         className={`bg-white text-black dark:bg-slate-600 dark:text-white outline-none border-2 ${error ? "border-red-600" : "border-slate-500"} px-2 py-2 rounded min-w-[300px]`}
                         type="text" placeholder='Nhập mã cuộc gọi và ấn enter...'
-                        onChange={handleChangeInput}
+                        value={codeCall}
+                        onChange={handleChangeInputCode}
                     />
                     <p className='text-sm font-normal text-red-600'>{error}</p>
                 </form>
             </div>
+
+            <Modal isOpen={isOpenModal} setIsOpen={setIsOpenModal}>
+                <form onSubmit={handleJoinCall}>
+                    <input
+                        className={`bg-white text-black dark:bg-slate-600 dark:text-white outline-none border-2 ${errorName ? "border-red-600" : "border-slate-500"}  px-2 py-2 rounded min-w-[300px]`}
+                        type="text" placeholder='Nhập tên của bạn và ấn enter...'
+                        autoFocus
+                        onChange={handleChangeInputName}
+                    />
+                    <p className='text-sm font-normal text-red-600'>{errorName}</p>
+                </form>
+            </Modal>
         </div>
     )
 }
