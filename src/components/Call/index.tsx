@@ -37,17 +37,29 @@ function CallContainer() {
     }, [])
 
     useEffect(() => {
-        // navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        //     .then((currentStream) => {
-        //         console.log(currentStream);
-        //         setStream(currentStream);
-        //         if (isCamera && myVideo.current) myVideo.current.srcObject = currentStream;
-        //         // else myVideo.current.srcObject = null;
-        //     });
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then((currentStream) => {
+                console.log(currentStream);
+                setStream(currentStream);
+                if (isCamera && myVideo.current) myVideo.current.srcObject = currentStream;
+                // else myVideo.current.srcObject = null;
+            });
     }, [isCamera]);
 
+    function stopVideoOnly(stream: any) {
+        stream.getTracks().forEach(function (track: any) {
+            if (track.readyState == 'live' && track.kind === 'video') {
+                track.stop();
+            }
+        });
+    }
+
     const handleDisplayCamera = () => {
+        if (isCamera) {
+            stopVideoOnly(stream)
+        }
         setIsCamera(i => !i)
+
     }
     const handleDisplayMic = () => {
         setIsMic(i => !i)
@@ -70,8 +82,11 @@ function CallContainer() {
         <div className='w-full h-full scrollbar-none overflow-hidden relative'>
             <div className='w-full h-full p-5 overflow-hidden flex flex-col lg:flex-row items-center'>
                 <div className={`${listUser?.length > 0 ? "w-full lg:w-[70%] xl:w-[75%]" : "w-full"} ${classAnimation} ${listUser?.length > 0 ? "h-fit" : "h-full"} lg:h-full flex items-center justify-center`}>
-                    <div className='w-full h-[200px] xs:h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[650px] 2xl:h-[700px]  bg-slate-900 rounded-2xl'>
-                        <video playsInline muted ref={myVideo} autoPlay />
+                    <div className='w-full h-[200px] xs:h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[650px] 2xl:h-[700px] flex justify-center items-center bg-slate-900 rounded-2xl'>
+                        <video
+                            className='max-w-full max-h-full'
+                            playsInline muted ref={myVideo} autoPlay src={stream}
+                        />
                     </div>
                 </div>
                 <div className={`my-4 lg:ml-4 ${listUser?.length > 0 ? "w-full h-[200px] lg:h-full lg:w-[30%] xl:w-[25%]" : "w-0 h-0"} ${classAnimation} overflow-hidden flex justify-center items-center`}>
@@ -132,7 +147,7 @@ function CallContainer() {
                     </div>
 
                     <div className='h-2 w-full bg-slate-700'
-                        style={{ boxShadow: "rgba(0, 0, 0, 0.5) 0px 1px 2px 0px, rgba(0, 0, 0, 0.5) 0px 2px 6px 2px;" }}
+                    // style={{ boxShadow: "rgba(0, 0, 0, 0.5) 0px 1px 2px 0px, rgba(0, 0, 0, 0.5) 0px 2px 6px 2px;" }}
                     ></div>
 
                     <div className='h-[calc(60%-8px)] w-full'>

@@ -42,7 +42,7 @@ function ChatMessage() {
 
             <div className='mt-4 h-[calc(100%-48px)] overflow-scroll scrollbar-none'>
                 {listMessage && listMessage?.length > 0 && listMessage?.map((item: any, index: number) => (
-                    <div key={index} className='flex items-start justify-start py-2' ref={__itemMessageRef}>
+                    <div key={index} className='flex items-start justify-start py-2 text-white' ref={__itemMessageRef}>
                         <div
                             className={`w-7 h-7 rounded-full bg-slate-500 flex items-center justify-center text-xs font-semibold`}
                         // style={{ backgroundColor: `${randomColor()}` }}
