@@ -17,7 +17,8 @@ function CallContainer() {
     const [isShowChat, setIsShowChat] = useState<boolean>(false);
     const [listUser, setListUser] = useState<any[]>([]);
     const classAnimation = "transition-all duration-300 ease-linear";
-    const myVideo = useRef<HTMLVideoElement>(null);
+    const myVideo = useRef<any>(null);
+    const mediaStreamRef = useRef<any>({ videoStream: null, audioStream: null });
     const [stream, setStream] = useState<any>();
 
     useEffect(() => {
@@ -36,33 +37,57 @@ function CallContainer() {
         }
     }, [])
 
-    useEffect(() => {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then((currentStream) => {
-                console.log(currentStream);
-                setStream(currentStream);
-                if (isCamera && myVideo.current) myVideo.current.srcObject = currentStream;
-                // else myVideo.current.srcObject = null;
-            });
-    }, [isCamera]);
+    const startCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            mediaStreamRef.current.videoStream = stream;
+            if (myVideo.current) myVideo.current.srcObject = new MediaStream(stream.getVideoTracks());
+            setIsCamera(true);
+        } catch (err) {
+            console.error('Error accessing camera.', err);
+        }
+    };
 
-    function stopVideoOnly(stream: any) {
-        stream.getTracks().forEach(function (track: any) {
-            if (track.readyState == 'live' && track.kind === 'video') {
-                track.stop();
-            }
-        });
-    }
+    const stopCamera = () => {
+        if (mediaStreamRef.current.videoStream) {
+            mediaStreamRef.current.videoStream.getVideoTracks().forEach((track: any) => track.stop());
+            mediaStreamRef.current.videoStream = null;
+            setIsCamera(false);
+        }
+    };
+
+    const startMic = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaStreamRef.current.audioStream = stream;
+            if (myVideo.current) myVideo.current.srcObject.addTrack(stream.getAudioTracks()[0]);
+            setIsMic(true);
+        } catch (err) {
+            console.error('Error accessing microphone.', err);
+        }
+    };
+
+    const stopMic = () => {
+        if (mediaStreamRef.current.audioStream) {
+            mediaStreamRef.current.audioStream.getAudioTracks().forEach((track: any) => track.stop());
+            mediaStreamRef.current.audioStream = null;
+            setIsMic(false);
+        }
+    };
 
     const handleDisplayCamera = () => {
         if (isCamera) {
-            stopVideoOnly(stream)
+            stopCamera()
+        } else {
+            startCamera()
         }
-        setIsCamera(i => !i)
-
     }
     const handleDisplayMic = () => {
-        setIsMic(i => !i)
+        if (isMic) {
+            stopMic()
+        } else {
+            startMic()
+        }
     }
     const handleShareScreen = () => {
         if (listUser?.length > 0) {
@@ -84,8 +109,8 @@ function CallContainer() {
                 <div className={`${listUser?.length > 0 ? "w-full lg:w-[70%] xl:w-[75%]" : "w-full"} ${classAnimation} ${listUser?.length > 0 ? "h-fit" : "h-full"} lg:h-full flex items-center justify-center`}>
                     <div className='w-full h-[200px] xs:h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[650px] 2xl:h-[700px] flex justify-center items-center bg-slate-900 rounded-2xl'>
                         <video
-                            className='max-w-full max-h-full'
-                            playsInline muted ref={myVideo} autoPlay src={stream}
+                            className='max-w-full max-h-full h-full scale-x-[-1]'
+                            playsInline muted={isMic} ref={myVideo} autoPlay
                         />
                     </div>
                 </div>
