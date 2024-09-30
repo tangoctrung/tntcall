@@ -22,7 +22,6 @@ const OneCall = () => {
         const startLocalStream = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                if (!localStreamRef.current || !localVideoRef.current) return;
                 localVideoRef.current.srcObject = stream;
                 localStreamRef.current = stream;
             } catch (error) {
@@ -87,6 +86,9 @@ const OneCall = () => {
         // Tạo offer và gửi qua signaling server
         const offer = await peerConnectionRef.current.createOffer();
         await peerConnectionRef.current.setLocalDescription(offer);
+
+        console.log("startCall: ", offer);
+
         socket.emit('offer', offer);
     };
 
