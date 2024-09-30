@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 const OneCall = () => {
-    const [socket] = useState(() => io('http://localhost:8000'));
+    const [socket] = useState(() => io(process.env.NEXT_PUBLIC_API_URL || "https://tntcall-server.render.com"));
     const localVideoRef = useRef<any>(null);
     const remoteVideoRef = useRef<any>(null);
     const peerConnectionRef = useRef<any>(null);
